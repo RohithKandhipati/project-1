@@ -1,0 +1,58 @@
+//Class "Car" represents a car with price, make, and year
+//CSC 1351 Programming Project No 1
+//Section 1
+//Rohith Kandhipati
+//3-17-23
+
+
+
+public class Car {
+		// To store the car's make:
+	    private String make; 
+	    // To store car's year:
+	    private int year; 
+	    // To store car's price:
+	    private int price; 
+	    
+	    //Constructor initializes a Car with make year and price
+	    public Car(String make, int year, int price) {
+	        this.make = make;
+	        this.year = year;
+	        this.price = price;
+	    }
+	    
+	    //gets the make of the car and @return returns the make of the car:
+	    public String getMake() {
+	        return make;
+	    }
+	    
+	    //gets the year of the car and @return returns the year of the car:
+	    public int getYear() {
+	        return year;
+	    }
+	    
+	    //gets the price of the car and @return returns the price of the car:
+	    public int getPrice() {
+	        return price;
+	    }
+	    
+	    //Compares 2 cars by their make and year
+	    // @param other = is the other object to compare 
+	    // If cars are equal, 0 is returned
+	    // if 'this' car is before 'other' car, negative integer is returned 
+	    // If 'this' car is after 'other' car, positive integer is returned
+	    public int compareTo(Car other) {
+	        if (this.make.compareTo(other.make) != 0) {
+	            return this.make.compareTo(other.make);
+	        } else {
+	            return Integer.compare(this.year, other.year);
+	        }
+	    }
+	    
+	    //returns string with make, year, and price of car,
+	    public String toString() {
+	        return "Make: " + make + ", Year: " + year + ", Price: " + price + ";";
+	    }
+	    
+	}
+
