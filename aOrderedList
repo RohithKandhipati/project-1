@@ -1,1 +1,99 @@
+//Class "aOrderedList" represents an ordered list of 'Car' objects
+//CSC 1351 Programming Project No 1
+//Section 1
+//Rohith Kandhipati
+//3-17-23
+import java.util.Arrays;
+import java.util.Iterator;
 
+public class aOrderedList<T extends Comparable<T>> implements Iterable<T> {
+	private static final int SIZE_INCREMENTS = 20;
+    private Car[] oList;
+    private int listSize;
+    private int numObjects;
+    private int curr; 
+
+   //constructor
+    public aOrderedList() {
+        oList = new Car[SIZE_INCREMENTS];
+        listSize = SIZE_INCREMENTS;
+        numObjects = 0;
+        curr = -1; 
+    }
+    
+    //adding new car obj to list method
+    public void add(Car newCar) {
+    	//checking if list is full, adding size if needed
+        if (numObjects == listSize) {
+            oList = Arrays.copyOf(oList, listSize + SIZE_INCREMENTS);
+            listSize += SIZE_INCREMENTS;
+        }
+        
+        //finding correct position to insert new car
+        int index = numObjects;
+        while (index > 0 && oList[index - 1].compareTo(newCar) > 0) {
+            oList[index] = oList[index - 1];
+            index--;
+        }
+        
+        //inserting new car
+        oList[index] = newCar;
+        numObjects++;
+    }
+
+    //method to get # of elements in list
+    public int size() {
+        return numObjects;
+    }
+
+    // method to get car at specific point of list
+    public Car get(int index) {
+        if (index < 0 || index >= numObjects) {
+            throw new IndexOutOfBoundsException("Index is out of bounds");
+        }
+        return oList[index];
+    }
+
+    //method checking if list is empty
+    public boolean isEmpty() {
+        return numObjects == 0;
+    }
+
+    //method to remove car a specific point of list
+    public void remove(int index) {
+        if (index < 0 || index >= numObjects) {
+            throw new IndexOutOfBoundsException("Index is out of bounds");
+        }
+        
+        //shift elements left
+        for (int i = index; i < numObjects - 1; i++) {
+            oList[i] = oList[i + 1];
+        }
+        //decrease #of objects in list
+        numObjects--;
+    }
+
+    public void reset() {
+        curr = 0; 
+    }
+
+    public Car next() {
+        if (curr >= numObjects) {
+            throw new IndexOutOfBoundsException("No more elements in the list");
+        }
+        return oList[curr++];
+    }
+
+    public boolean hasNext() {
+        return curr < numObjects;
+    }
+
+	@Override
+	public Iterator<T> iterator() {
+	
+		return null;
+	}
+}
+	    
+	    
+	    
