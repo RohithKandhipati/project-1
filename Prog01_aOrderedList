@@ -1,0 +1,114 @@
+//Class "Prog01_aOrderedList" gets input from the user, reads input file data, and adds car to list
+//CSC 1351 Programming Project No 1
+//Section 1
+//Rohith Kandhipati
+//3-17-23
+
+import java.io.File;
+import java.util.Scanner;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+
+public class Prog01_aOrderedList {
+	public static void main(String[] args) {
+		Scanner scanner = new Scanner(System.in);
+		//making new instance 
+        aOrderedList orderedList = new aOrderedList();
+        
+        try {
+        	//asking user for input
+            Scanner fileScanner = getInputFile(scanner, "Enter input filename: ");
+            
+            //reading input file and executing 
+            while (fileScanner.hasNextLine()) {
+                String line = fileScanner.nextLine();
+                String[] parts = line.split(",");
+                
+                //adding
+                if (parts.length >= 4) {
+                    if (parts[0].equals("A")) {
+                        String make = parts[1];
+                        int year = Integer.parseInt(parts[2]);
+                        int price = Integer.parseInt(parts[3]);
+                        
+                        //adding new car to list 
+                        orderedList.add(new Car(make, year, price));
+                    } 
+                    
+                    //to delete
+                    else if (parts[0].equals("D")) {
+                        //specific spot
+                        if (parts.length == 2) {
+                            String make = parts[1];
+                            int year = Integer.parseInt(parts[2]);
+                            //specified by make and year
+                            int index = findCarIndex(orderedList, make, year);
+                            if (index != -1) {
+                                orderedList.remove(index);
+                            }
+                        }
+                    	}
+                	}
+            	}
+            
+            fileScanner.close();
+            //output current list
+            PrintWriter outputFile = getOutputFile(scanner, "Enter output filename: ");
+            
+            outputFile.println("Number of cars: " + orderedList.size());
+            
+            //to reset iterator
+            orderedList.reset(); 
+            
+            
+            while (orderedList.hasNext()) {
+                Car car = orderedList.next();
+                outputFile.println(car.toString());
+            }
+            outputFile.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found.");
+            e.printStackTrace();
+        }
+        scanner.close();
+    }
+
+	//method to get input file from user
+    public static Scanner getInputFile(Scanner scanner, String userPrompt) throws FileNotFoundException {
+        System.out.print(userPrompt);
+        String filename = scanner.nextLine();
+        File file = new File(filename);
+        
+        while (!file.exists()) {
+            System.out.println("File specified <" + filename + "> does not exist.");
+            System.out.print("Would you like to continue? <Y/N> ");
+            String choice = scanner.nextLine();
+            if (choice.equalsIgnoreCase("N")) {
+                throw new FileNotFoundException();
+            }
+            
+            System.out.print(userPrompt);
+            filename = scanner.nextLine();
+            file = new File(filename);
+        }
+        
+        return new Scanner(file);
+    }
+
+    public static PrintWriter getOutputFile(Scanner scanner, String userPrompt) throws FileNotFoundException {
+        System.out.print(userPrompt);
+        String filename = scanner.nextLine();
+        return new PrintWriter(filename);
+    }
+
+    public static int findCarIndex(aOrderedList orderedList, String make, int year) {
+        for (int i = 0; i < orderedList.size(); i++) {
+            Car car = orderedList.get(i);
+            if (car.getMake().equals(make) && car.getYear() == year) {
+                return i;
+            }
+        }
+        return -1; // Car not found
+    }
+}
+
